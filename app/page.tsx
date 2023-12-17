@@ -1,7 +1,8 @@
-import Image from 'next/image'
 import Link from 'next/link'
-
-export default function Home() {
+import { auth } from '@clerk/nextjs'
+export default async function Home() {
+  const { userId } = await auth()
+  let href = userId ? '/journal' : '/new-user'
   return (
     <div className="relative w-screen h-screen flex flex-col justify-center bg-black items-center text-white">
       <div className="flex flex-col w-full mx-auto max-w-[600px] gap-[20px]">
@@ -15,7 +16,7 @@ export default function Home() {
           app empowers you to effortlessly track and understand your mood
           patterns.
         </p>
-        <Link href="/journal">
+        <Link href={href}>
           <div className="cursor">
             <button className="bg-gradient-to-r from-sky-400 to-blue-500 px-4 py-2 rounded-lg text-md">
               Get Started

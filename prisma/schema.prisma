@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          =env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String         @id @default(uuid())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  entries   JournalEntry[]
+  clerkId   String         @unique
+  email     String         @unique
+}
+
+model JournalEntry {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  content   String    @db.Text
+  analysis  Analysis?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([userId]) //make unique references
+}
+
+model Analysis {
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  entryId   String
+  entry     JournalEntry @relation(fields: [entryId], references: [id])
+  mood      String
+  summary   String       @db.Text
+  color     String
+  negative  Boolean
+
+  @@unique([entryId])
+}
