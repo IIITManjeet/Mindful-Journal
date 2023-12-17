@@ -4,7 +4,7 @@ export default async function Home() {
   const { userId } = await auth()
   let href = userId ? '/journal' : '/new-user'
   return (
-    <div className="relative w-screen h-screen flex flex-col justify-center bg-black items-center text-white">
+    <div className="relative w-screen h-screen flex flex-col justify-center bg-[#0E1113] items-center text-white">
       <div className="flex flex-col w-full mx-auto max-w-[600px] gap-[20px]">
         <h1 className="text-3xl font-bold">
           Mindful Journal: Your AI-Powered Mood Tracker
