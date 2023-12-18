@@ -29,7 +29,7 @@ model JournalEntry {
   userId    String
   user      User      @relation(fields: [userId], references: [id])
 
-  @@index([userId]) //make unique references
+  @@unique([userId,id])
 }
 
 model Analysis {
