@@ -1,7 +1,7 @@
 import Editor from '@/components/Editor'
 import { getUserByClerkID } from '@/utils/auth'
 import { prisma } from '@/utils/db'
-import { JournalEntry } from '@prisma/client'
+import { Analysis, JournalEntry } from '@prisma/client'
 
 const getEntry = async (id: string) => {
   const user = await getUserByClerkID()
@@ -12,6 +12,9 @@ const getEntry = async (id: string) => {
         id,
       },
     },
+    include: {
+      analysis: true,
+    },
   })
 
   return entry
@@ -19,22 +22,36 @@ const getEntry = async (id: string) => {
 
 const EntryPage = async ({ params }: any) => {
   const entry = await getEntry(params?.id)
+  interface props {
+    mood: string
+    summary: string
+    color: string
+    subject: string
+    negative: Boolean
+  }
+  const {
+    mood,
+    summary,
+    color,
+    subject,
+    negative,
+  }: props = entry?.analysis as Analysis
   const analysisData = [
     {
       name: 'Summary',
-      value: '',
+      value: summary,
     },
     {
       name: 'Subject',
-      value: '',
+      value: subject,
     },
     {
       name: 'Mood',
-      value: '',
+      value: mood,
     },
     {
       name: 'Negative',
-      value: 'False',
+      value: negative ? 'True' : 'False',
     },
   ]
   return (
@@ -43,7 +60,10 @@ const EntryPage = async ({ params }: any) => {
         <Editor entry={entry as JournalEntry} />
       </div>
       <div className="rounded-md px-3 shadow-md shadow-black/40 py-5">
-        <h2 className="font-semibold bg-blue-300/20 rounded-md p-3 text-blue-600 font-mono text-xl text-center">
+        <h2
+          className="font-semibold rounded-md p-3 text-blue-600 font-mono text-xl text-center"
+          style={{ backgroundColor: color }}
+        >
           Analysis
         </h2>
         <div>
@@ -52,10 +72,10 @@ const EntryPage = async ({ params }: any) => {
               return (
                 <li
                   key={item?.name}
-                  className="flex px-2 py-2 font-mono items-center justify-between border-b border-t border-black/20"
+                  className="flex gap-3 px-2 py-2 font-mono items-center justify-between border-b border-t border-black/20"
                 >
-                  <span className="text-lg font-semibold">{item?.name}</span>
-                  <span>{item?.value}</span>
+                  <span className="text-md font-semibold">{item?.name}</span>
+                  <span className="text-[14px] text-left">{item?.value}</span>
                 </li>
               )
             })}
