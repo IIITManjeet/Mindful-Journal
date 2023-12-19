@@ -10,7 +10,7 @@ interface props {
 
 const Editor = ({ entry }: props) => {
   const [value, setValue] = useState<string>(entry?.content)
-  const [isLoading, setIsLoading] = useState<Boolean>(false)
+  const [isLoading, setIsLoading] = useState<Boolean>(true)
   useAutosave({
     data: value,
     onSave: async (_value: string) => {
