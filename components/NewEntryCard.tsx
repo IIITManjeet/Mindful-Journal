@@ -1,23 +1,37 @@
 'use client'
 import { createNewEntry } from '@/utils/api'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import { useState } from 'react'
+import Spinner from './Spinner'
 
 const NewEntryCard = () => {
   const router = useRouter()
+  const [creating, setCreating] = useState(false)
+
   const handleOnClick = async () => {
+    if (creating) return
+    setCreating(true)
     const data = await createNewEntry()
     router.push(`/journal/${data?.id}`)
   }
+
   return (
-    <div
-      className="cursor-pointer overflow-hidden rounded-lg bg-white shadow-lg"
+    <button
       onClick={handleOnClick}
+      disabled={creating}
+      className="group flex h-full min-h-[180px] cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-sage-200 bg-sage-50/40 text-sage-600 transition hover:border-sage-400 hover:bg-sage-50 disabled:opacity-70"
     >
-      <div className="px-4 py-5 sm:p-6">
-        <span className="text-xl">New Entry</span>
-      </div>
-    </div>
+      {creating ? (
+        <Spinner />
+      ) : (
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sage-500 text-2xl text-cream-50 shadow-calm transition group-hover:scale-110">
+          +
+        </span>
+      )}
+      <span className="font-serif text-lg font-medium">
+        {creating ? 'Creating…' : 'New entry'}
+      </span>
+    </button>
   )
 }
 

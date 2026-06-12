@@ -33,8 +33,7 @@ export const PATCH = async (request: Request, { params }: props) => {
     } as Analysis,
     update: analysis as Analysis,
   })
-  console.log(update)
-  return NextResponse.json({ data: updatedEntry })
+  return NextResponse.json({ data: { ...updatedEntry, analysis: update } })
 }
 
 export const POST = async () => {

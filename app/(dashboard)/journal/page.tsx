@@ -2,15 +2,17 @@ import { getUserByClerkID } from '@/utils/auth'
 import { prisma } from '../../../utils/db'
 import NewEntryCard from '@/components/NewEntryCard'
 import EntryCard from '@/components/EntryCard'
-import { JournalEntry } from '@prisma/client'
 import Link from 'next/link'
-import { analyze } from '@/utils/ai'
+import Question from '@/components/Question'
 
 const getEntries = async () => {
   const user = await getUserByClerkID()
   const entries = await prisma.journalEntry.findMany({
     where: {
       userId: user?.id,
+    },
+    include: {
+      analysis: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -20,15 +22,37 @@ const getEntries = async () => {
   return entries
 }
 
+const greeting = () => {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 18) return 'Good afternoon'
+  return 'Good evening'
+}
+
 const JournalPage = async () => {
   const entries = await getEntries()
-  console.log(entries)
+
   return (
-    <div className="p-5 bg-zinc-400/10 h-full rounded-lg shadow-md shadow-black/40">
-      <h2 className="text-2xl font-semibold mb-2">Jounal Entries</h2>
-      <div className="grid grid-cols-3 gap-4 p-5">
+    <div className="mx-auto max-w-6xl animate-fade-in-up">
+      <header className="mb-8">
+        <h1 className="font-serif text-4xl font-semibold text-ink">
+          {greeting()}.
+        </h1>
+        <p className="mt-2 text-lg text-ink-muted">
+          How are you feeling today? Take a moment to reflect.
+        </p>
+      </header>
+
+      <div className="mb-8">
+        <Question />
+      </div>
+
+      <h2 className="mb-4 font-serif text-2xl font-semibold text-ink">
+        Your entries
+      </h2>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <NewEntryCard />
-        {entries.map((entry: JournalEntry) => (
+        {entries.map((entry) => (
           <Link href={`/journal/${entry?.id}`} key={entry?.id}>
             <EntryCard entry={entry} />
           </Link>
@@ -37,4 +61,5 @@ const JournalPage = async () => {
     </div>
   )
 }
+
 export default JournalPage

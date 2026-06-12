@@ -1,29 +1,47 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs'
+
 export default async function Home() {
   const { userId } = await auth()
-  let href = userId ? '/journal' : '/new-user'
+  const href = userId ? '/journal' : '/new-user'
+
   return (
-    <div className="relative w-screen h-screen flex flex-col justify-center bg-[#0E1113] items-center text-white">
-      <div className="flex flex-col w-full mx-auto max-w-[600px] gap-[20px]">
-        <h1 className="text-3xl font-bold">
-          Mindful Journal: Your AI-Powered Mood Tracker
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-cream px-6">
+      {/* Soft ambient glows */}
+      <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-sage-200/40 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-clay/20 blur-3xl" />
+
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-7 text-center animate-fade-in-up">
+        <span className="rounded-full border border-line bg-cream-50 px-4 py-1.5 text-sm font-medium text-ink-muted shadow-calm">
+          🌿 Your AI-powered mood companion
+        </span>
+
+        <h1 className="font-serif text-5xl font-semibold leading-tight text-ink sm:text-6xl">
+          A calm space to write,
+          <br />
+          <span className="text-sage-600">reflect</span>, and understand
+          yourself.
         </h1>
-        <p className="text-white/60">
-          Discover the power of self-reflection with Mindful Journal, the
-          ultimate companion for your emotional well-being. Seamlessly blending
-          advanced AI technology with the simplicity of a daily journal, this
-          app empowers you to effortlessly track and understand your mood
-          patterns.
+
+        <p className="max-w-xl text-lg leading-relaxed text-ink-muted">
+          Mindful Journal blends gentle AI insight with the simplicity of a
+          daily journal — helping you notice patterns, name your feelings, and
+          return to yourself, one entry at a time.
         </p>
+
         <Link href={href}>
-          <div className="cursor">
-            <button className="bg-gradient-to-r from-sky-400 to-blue-500 px-4 py-2 rounded-lg text-md">
-              Get Started
-            </button>
-          </div>
+          <button className="group mt-2 inline-flex items-center gap-2 rounded-full bg-sage-500 px-7 py-3.5 text-base font-medium text-cream-50 shadow-calm-lg transition hover:bg-sage-600 hover:shadow-calm">
+            Begin journaling
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </button>
         </Link>
       </div>
-    </div>
+
+      <footer className="absolute bottom-6 text-sm text-ink-soft">
+        Write freely. Reflect gently.
+      </footer>
+    </main>
   )
 }
