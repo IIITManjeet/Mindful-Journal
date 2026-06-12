@@ -4,6 +4,7 @@ import NewEntryCard from '@/components/NewEntryCard'
 import EntryCard from '@/components/EntryCard'
 import Link from 'next/link'
 import Question from '@/components/Question'
+import Onboarding from '@/components/Onboarding'
 
 const getEntries = async () => {
   const user = await getUserByClerkID()
@@ -43,21 +44,27 @@ const JournalPage = async () => {
         </p>
       </header>
 
-      <div className="mb-8">
-        <Question />
-      </div>
+      {entries.length === 0 ? (
+        <Onboarding />
+      ) : (
+        <>
+          <div className="mb-8">
+            <Question />
+          </div>
 
-      <h2 className="mb-4 font-serif text-2xl font-semibold text-ink">
-        Your entries
-      </h2>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <NewEntryCard />
-        {entries.map((entry) => (
-          <Link href={`/journal/${entry?.id}`} key={entry?.id}>
-            <EntryCard entry={entry} />
-          </Link>
-        ))}
-      </div>
+          <h2 className="mb-4 font-serif text-2xl font-semibold text-ink">
+            Your entries
+          </h2>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <NewEntryCard />
+            {entries.map((entry) => (
+              <Link href={`/journal/${entry?.id}`} key={entry?.id}>
+                <EntryCard entry={entry} />
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }

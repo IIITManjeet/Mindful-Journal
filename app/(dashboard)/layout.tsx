@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 const links = [
   { href: '/', label: 'Home', icon: '🏠' },
   { href: '/journal', label: 'Journal', icon: '📖' },
+  { href: '/insights', label: 'Insights', icon: '🌤️' },
 ]
 
 interface Props {
