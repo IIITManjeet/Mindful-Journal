@@ -173,7 +173,7 @@ const Editor = ({ entry }: { entry: any }) => {
         </div>
 
         <textarea
-          className="scrollbar-calm h-full min-h-[300px] w-full resize-none rounded-2xl border border-line bg-cream-50 p-7 text-[17px] leading-relaxed text-ink shadow-calm outline-none transition focus:border-sage-200 focus:ring-2 focus:ring-sage-100"
+          className="scrollbar-calm h-full min-h-[55vh] w-full resize-none rounded-2xl border border-line bg-cream-50 p-5 text-[17px] leading-relaxed text-ink shadow-calm outline-none transition focus:border-sage-200 focus:ring-2 focus:ring-sage-100 sm:p-7 lg:min-h-[60vh]"
           value={value}
           placeholder="Write about your day…"
           onChange={(e) => setValue(e.target.value)}
@@ -183,7 +183,7 @@ const Editor = ({ entry }: { entry: any }) => {
       {/* Analysis panel */}
       <aside className="flex flex-col gap-4">
         <div
-          className="rounded-2xl p-6 text-center shadow-calm"
+          className="animate-scale-in rounded-2xl p-6 text-center shadow-calm transition-[background-color] duration-700 ease-out"
           style={{ backgroundColor: accent }}
         >
           <p className="text-sm font-medium uppercase tracking-wide text-ink/60">

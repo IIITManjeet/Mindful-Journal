@@ -14,16 +14,24 @@ const EntryCard = ({ entry }: props) => {
   const color = analysis?.color || '#C5D6C7'
 
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-cream-50 shadow-calm transition duration-200 hover:-translate-y-1 hover:shadow-calm-lg">
+    <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-cream-50 shadow-calm transition duration-300 ease-out hover:-translate-y-1 hover:border-sage-200 hover:shadow-calm-lg">
       {/* Mood color accent bar */}
       <div className="h-1.5 w-full" style={{ backgroundColor: color }} />
 
       <div className="flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-ink-soft">{date}</span>
-          <span className="text-lg" title={analysis?.negative ? 'Heavier' : 'Lighter'}>
-            {analysis?.negative ? '🌧️' : '☀️'}
-          </span>
+          {analysis && (
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide ${
+                analysis.negative
+                  ? 'bg-clay/10 text-clay-600'
+                  : 'bg-sage-100 text-sage-700'
+              }`}
+            >
+              {analysis.negative ? 'Heavier' : 'Lighter'}
+            </span>
+          )}
         </div>
 
         <p className="line-clamp-3 min-h-[3.75rem] text-[15px] leading-relaxed text-ink/80">

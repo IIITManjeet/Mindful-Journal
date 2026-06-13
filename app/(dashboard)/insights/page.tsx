@@ -1,14 +1,13 @@
 import { getUserByClerkID } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 import Link from 'next/link'
+import Logo from '@/components/Logo'
 import StatCard from '@/components/insights/StatCard'
 import SentimentChart from '@/components/insights/SentimentChart'
-import MoodHeatmap, { HeatDay } from '@/components/insights/MoodHeatmap'
+import MoodCalendar, { DayInfo } from '@/components/insights/MoodCalendar'
 import MoodDistribution, {
   MoodSlice,
 } from '@/components/insights/MoodDistribution'
-
-const WEEKS = 18
 
 const dateKey = (d: Date) => {
   const y = d.getFullYear()
@@ -31,11 +30,8 @@ const InsightsPage = async () => {
   const entries = await getData()
   const analyzed = entries.filter((e) => e.analysis)
 
-  // --- Per-day rollup (latest entry of a day wins its color) ---
-  const dayMap = new Map<
-    string,
-    { color: string; score: number; count: number }
-  >()
+  // --- Per-day rollup (latest entry of a day wins its color/mood) ---
+  const dayMap = new Map<string, DayInfo>()
   for (const e of entries) {
     if (!e.analysis) continue
     const key = dateKey(new Date(e.createdAt))
@@ -43,32 +39,17 @@ const InsightsPage = async () => {
     dayMap.set(key, {
       color: e.analysis.color,
       score: e.analysis.sentimentScore,
+      mood: e.analysis.mood,
       count: (prev?.count || 0) + 1,
     })
   }
 
-  // --- Heatmap (last WEEKS weeks, aligned to Sunday) ---
+  // --- Calendar data (a plain map the client component can page through) ---
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  const start = new Date(today)
-  start.setDate(start.getDate() - start.getDay() - (WEEKS - 1) * 7)
-  const days: HeatDay[] = []
-  for (let i = 0; i < WEEKS * 7; i++) {
-    const d = new Date(start)
-    d.setDate(start.getDate() + i)
-    const info = dayMap.get(dateKey(d))
-    days.push({
-      key: dateKey(d),
-      label: d.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-      }),
-      color: info?.color ?? null,
-      count: info?.count ?? 0,
-      future: d > today,
-    })
-  }
+  const entriesByDay: Record<string, DayInfo> = Object.fromEntries(dayMap)
+  const todayKey = dateKey(today)
+  const firstKey = entries.length ? dateKey(new Date(entries[0].createdAt)) : null
 
   // --- Current streak (consecutive days, with a 1-day grace) ---
   let streak = 0
@@ -115,7 +96,9 @@ const InsightsPage = async () => {
   if (entries.length === 0) {
     return (
       <div className="mx-auto max-w-2xl animate-fade-in-up py-20 text-center">
-        <div className="mb-4 text-5xl">🌤️</div>
+        <div className="mb-5 flex justify-center">
+          <Logo size={56} />
+        </div>
         <h1 className="mb-2 font-serif text-3xl font-semibold text-ink">
           Your emotional weather, soon
         </h1>
@@ -136,49 +119,42 @@ const InsightsPage = async () => {
   return (
     <div className="mx-auto max-w-6xl animate-fade-in-up">
       <header className="mb-8">
-        <h1 className="font-serif text-4xl font-semibold text-ink">
+        <h1 className="font-serif text-3xl font-semibold text-ink sm:text-4xl">
           Emotional weather
         </h1>
-        <p className="mt-2 text-lg text-ink-muted">
+        <p className="mt-2 text-base text-ink-muted sm:text-lg">
           The patterns and rhythms of how you’ve been feeling.
         </p>
       </header>
 
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard
-          label="Entries"
-          value={entries.length}
-          emoji="📖"
-          hint="moments captured"
-        />
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <StatCard label="Entries" value={entries.length} hint="moments captured" />
         <StatCard
           label="Current streak"
           value={`${streak} ${streak === 1 ? 'day' : 'days'}`}
-          emoji="🔥"
           hint="keep it going"
         />
         <StatCard
           label="Avg. sentiment"
           value={avgSentiment}
-          emoji="🌡️"
           hint="on a -10 to 10 scale"
         />
         <StatCard
           label="Top mood"
           value={topMood}
-          emoji="✨"
           accent={slices[0]?.color}
           hint="most felt lately"
         />
       </div>
 
-      {/* Heatmap */}
-      <section className="mb-6 rounded-2xl border border-line bg-cream-50 p-6 shadow-calm">
-        <h2 className="mb-4 font-serif text-xl font-semibold text-ink">
-          Mood calendar
-        </h2>
-        <MoodHeatmap days={days} />
+      {/* Calendar */}
+      <section className="mb-6 rounded-2xl border border-line bg-cream-50 p-5 shadow-calm sm:p-6">
+        <MoodCalendar
+          entriesByDay={entriesByDay}
+          todayKey={todayKey}
+          firstKey={firstKey}
+        />
       </section>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

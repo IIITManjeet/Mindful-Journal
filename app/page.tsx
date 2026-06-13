@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs'
+import Logo from '@/components/Logo'
 
 export default async function Home() {
   const { userId } = await auth()
@@ -11,12 +12,14 @@ export default async function Home() {
       <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-sage-200/40 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-clay/20 blur-3xl" />
 
-      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-7 text-center animate-fade-in-up">
+      <div className="relative z-10 flex w-full max-w-2xl flex-col items-center gap-6 text-center animate-fade-in-up sm:gap-7">
+        <Logo size={64} />
+
         <span className="rounded-full border border-line bg-cream-50 px-4 py-1.5 text-sm font-medium text-ink-muted shadow-calm">
-          🌿 Your AI-powered mood companion
+          Your AI-powered mood companion
         </span>
 
-        <h1 className="font-serif text-5xl font-semibold leading-tight text-ink sm:text-6xl">
+        <h1 className="font-serif text-4xl font-semibold leading-tight text-ink sm:text-6xl">
           A calm space to write,
           <br />
           <span className="text-sage-600">reflect</span>, and understand

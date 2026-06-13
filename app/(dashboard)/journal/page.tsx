@@ -5,6 +5,7 @@ import EntryCard from '@/components/EntryCard'
 import Link from 'next/link'
 import Question from '@/components/Question'
 import Onboarding from '@/components/Onboarding'
+import Greeting from '@/components/Greeting'
 
 const getEntries = async () => {
   const user = await getUserByClerkID()
@@ -23,21 +24,14 @@ const getEntries = async () => {
   return entries
 }
 
-const greeting = () => {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning'
-  if (hour < 18) return 'Good afternoon'
-  return 'Good evening'
-}
-
 const JournalPage = async () => {
   const entries = await getEntries()
 
   return (
     <div className="mx-auto max-w-6xl animate-fade-in-up">
       <header className="mb-8">
-        <h1 className="font-serif text-4xl font-semibold text-ink">
-          {greeting()}.
+        <h1 className="font-serif text-3xl font-semibold text-ink sm:text-4xl">
+          <Greeting />.
         </h1>
         <p className="mt-2 text-lg text-ink-muted">
           How are you feeling today? Take a moment to reflect.
@@ -57,8 +51,13 @@ const JournalPage = async () => {
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <NewEntryCard />
-            {entries.map((entry) => (
-              <Link href={`/journal/${entry?.id}`} key={entry?.id}>
+            {entries.map((entry, i) => (
+              <Link
+                href={`/journal/${entry?.id}`}
+                key={entry?.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
+              >
                 <EntryCard entry={entry} />
               </Link>
             ))}
