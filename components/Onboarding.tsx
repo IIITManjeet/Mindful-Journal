@@ -3,18 +3,19 @@ import { createNewEntry } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Spinner from './Spinner'
+import Logo from './Logo'
 
 const STARTERS = [
-  { emoji: '🌅', label: 'How I’m feeling right now', seed: 'Right now, I’m feeling ' },
-  { emoji: '🙏', label: 'Something I’m grateful for', seed: 'Today I’m grateful for ' },
-  { emoji: '🌧️', label: 'What’s weighing on me', seed: 'Something on my mind is ' },
-  { emoji: '✨', label: 'A small win today', seed: 'A small win today was ' },
+  { label: 'How I’m feeling right now', seed: 'Right now, I’m feeling ' },
+  { label: 'Something I’m grateful for', seed: 'Today I’m grateful for ' },
+  { label: 'What’s weighing on me', seed: 'Something on my mind is ' },
+  { label: 'A small win today', seed: 'A small win today was ' },
 ]
 
 const STEPS = [
-  { icon: '✍️', title: 'Write freely', text: 'Jot down whatever’s on your mind — no rules.' },
-  { icon: '🧠', title: 'Get insight', text: 'AI gently reflects your mood, themes, and tone.' },
-  { icon: '🌤️', title: 'See patterns', text: 'Watch your emotional weather unfold over time.' },
+  { title: 'Write freely', text: 'Jot down whatever’s on your mind — no rules.' },
+  { title: 'Get insight', text: 'AI gently reflects your mood, themes, and tone.' },
+  { title: 'See patterns', text: 'Watch your emotional weather unfold over time.' },
 ]
 
 const Onboarding = () => {
@@ -29,25 +30,29 @@ const Onboarding = () => {
   }
 
   return (
-    <div className="animate-fade-in-up rounded-2xl border border-line bg-cream-50 p-8 shadow-calm sm:p-12">
+    <div className="animate-fade-in-up rounded-2xl border border-line bg-cream-50 p-6 shadow-calm sm:p-10 lg:p-12">
       <div className="mx-auto max-w-2xl text-center">
-        <div className="mb-3 text-5xl">🌿</div>
-        <h2 className="font-serif text-3xl font-semibold text-ink">
+        <div className="mb-4 flex justify-center">
+          <Logo size={56} />
+        </div>
+        <h2 className="font-serif text-2xl font-semibold text-ink sm:text-3xl">
           Welcome to your calm space
         </h2>
-        <p className="mt-3 text-lg leading-relaxed text-ink-muted">
+        <p className="mt-3 text-base leading-relaxed text-ink-muted sm:text-lg">
           This is yours alone — a quiet place to write, reflect, and slowly
           understand yourself. Here’s how it works:
         </p>
       </div>
 
       <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
-        {STEPS.map((s) => (
+        {STEPS.map((s, i) => (
           <div
             key={s.title}
             className="rounded-xl border border-line bg-cream p-5 text-center"
           >
-            <div className="mb-2 text-2xl">{s.icon}</div>
+            <div className="mx-auto mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-sage-100 font-serif text-sm font-semibold text-sage-700">
+              {i + 1}
+            </div>
             <h3 className="font-serif text-lg font-semibold text-ink">
               {s.title}
             </h3>
@@ -68,7 +73,7 @@ const Onboarding = () => {
               disabled={!!loading}
               className="flex items-center gap-3 rounded-xl border border-line bg-cream px-4 py-3.5 text-left transition hover:border-sage-300 hover:bg-sage-50 disabled:opacity-60"
             >
-              <span className="text-xl">{s.emoji}</span>
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-sage-400" />
               <span className="font-medium text-ink">{s.label}</span>
               {loading === s.label && (
                 <span className="ml-auto">

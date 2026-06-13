@@ -21,9 +21,17 @@ const EntryCard = ({ entry }: props) => {
       <div className="flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-ink-soft">{date}</span>
-          <span className="text-lg" title={analysis?.negative ? 'Heavier' : 'Lighter'}>
-            {analysis?.negative ? '🌧️' : '☀️'}
-          </span>
+          {analysis && (
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide ${
+                analysis.negative
+                  ? 'bg-clay/10 text-clay-600'
+                  : 'bg-sage-100 text-sage-700'
+              }`}
+            >
+              {analysis.negative ? 'Heavier' : 'Lighter'}
+            </span>
+          )}
         </div>
 
         <p className="line-clamp-3 min-h-[3.75rem] text-[15px] leading-relaxed text-ink/80">
