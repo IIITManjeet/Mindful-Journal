@@ -51,8 +51,13 @@ const JournalPage = async () => {
           </h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <NewEntryCard />
-            {entries.map((entry) => (
-              <Link href={`/journal/${entry?.id}`} key={entry?.id}>
+            {entries.map((entry, i) => (
+              <Link
+                href={`/journal/${entry?.id}`}
+                key={entry?.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
+              >
                 <EntryCard entry={entry} />
               </Link>
             ))}

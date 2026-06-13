@@ -106,10 +106,10 @@ const DashboardNav = () => {
       {open && (
         <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
           <div
-            className="absolute inset-0 bg-ink/30 backdrop-blur-sm animate-fade-in-up"
+            className="absolute inset-0 bg-ink/30 backdrop-blur-sm animate-fade-in"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-0 flex h-full w-[270px] flex-col border-r border-line bg-cream-50 p-5 shadow-calm-lg">
+          <div className="absolute left-0 top-0 flex h-full w-[270px] flex-col border-r border-line bg-cream-50 p-5 shadow-calm-lg animate-slide-in-left">
             <div className="mb-8 flex items-center justify-between">
               <Logo size={34} withWordmark />
               <button

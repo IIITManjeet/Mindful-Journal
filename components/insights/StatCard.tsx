@@ -7,7 +7,7 @@ interface props {
 
 const StatCard = ({ label, value, hint, accent }: props) => {
   return (
-    <div className="rounded-2xl border border-line bg-cream-50 p-4 shadow-calm sm:p-5">
+    <div className="rounded-2xl border border-line bg-cream-50 p-4 shadow-calm transition duration-300 hover:-translate-y-0.5 hover:shadow-calm-lg sm:p-5">
       <div className="mb-1 flex items-center gap-2">
         {accent && (
           <span

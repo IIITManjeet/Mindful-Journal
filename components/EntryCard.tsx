@@ -14,7 +14,7 @@ const EntryCard = ({ entry }: props) => {
   const color = analysis?.color || '#C5D6C7'
 
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-cream-50 shadow-calm transition duration-200 hover:-translate-y-1 hover:shadow-calm-lg">
+    <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-cream-50 shadow-calm transition duration-300 ease-out hover:-translate-y-1 hover:border-sage-200 hover:shadow-calm-lg">
       {/* Mood color accent bar */}
       <div className="h-1.5 w-full" style={{ backgroundColor: color }} />
 

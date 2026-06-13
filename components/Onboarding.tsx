@@ -48,7 +48,7 @@ const Onboarding = () => {
         {STEPS.map((s, i) => (
           <div
             key={s.title}
-            className="rounded-xl border border-line bg-cream p-5 text-center"
+            className="rounded-xl border border-line bg-cream p-5 text-center transition duration-300 hover:-translate-y-0.5 hover:border-sage-200 hover:shadow-calm"
           >
             <div className="mx-auto mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-sage-100 font-serif text-sm font-semibold text-sage-700">
               {i + 1}

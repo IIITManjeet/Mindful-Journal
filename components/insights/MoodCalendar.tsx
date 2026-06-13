@@ -110,7 +110,10 @@ const MoodCalendar = ({ entriesByDay, todayKey, firstKey }: Props) => {
       </div>
 
       {/* Day grid */}
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div
+        key={`${view.year}-${view.month}`}
+        className="grid animate-fade-in grid-cols-7 gap-1.5 sm:gap-2"
+      >
         {cells.map((cell, i) => {
           if (!cell) return <div key={`empty-${i}`} className="aspect-square" />
 

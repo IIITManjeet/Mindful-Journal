@@ -183,7 +183,7 @@ const Editor = ({ entry }: { entry: any }) => {
       {/* Analysis panel */}
       <aside className="flex flex-col gap-4">
         <div
-          className="rounded-2xl p-6 text-center shadow-calm"
+          className="animate-scale-in rounded-2xl p-6 text-center shadow-calm transition-[background-color] duration-700 ease-out"
           style={{ backgroundColor: accent }}
         >
           <p className="text-sm font-medium uppercase tracking-wide text-ink/60">
